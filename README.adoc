@@ -18,6 +18,15 @@ docker run \
     jordyv/kocam
 ```
 
+=== From source
+
+```
+$ ./gradlew installDist
+
+# Release saved in build/install
+$ ./build/install/kocam/bin/kocam
+```
+
 == Environment variables
 
 |=====
