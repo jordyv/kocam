@@ -82,18 +82,18 @@ class ImageDifference(
      */
     fun saveDifferenceImage(outputFile: File) {
         val newImage = BufferedImage(
-            firstImage.colorModel,
-            firstImage.copyData(null),
-            firstImage.colorModel.isAlphaPremultiplied,
+            secondImage.colorModel,
+            secondImage.copyData(null),
+            secondImage.colorModel.isAlphaPremultiplied,
             null
         )
         val graphics = newImage.createGraphics()
-        graphics.color = Color.RED
+        graphics.color = Color(255, 0, 0, 50)
 
         for (x in 0..(differenceMatrix.size - 1)) {
             for (y in 0..(differenceMatrix[x].size - 1)) {
                 if (differenceMatrix[x][y] != 0) {
-                    graphics.drawRect(x, y, 10, 10)
+                    graphics.drawRect(x, y, 5, 5)
                 }
             }
         }
