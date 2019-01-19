@@ -1,0 +1,30 @@
+= Kocam
+
+== Description
+
+Kocam is a simple daemon written in Kotlin and can be used to detect difference in camera images.
+Kocam will get an image from your IP camera every x seconds and calculate the difference with the previous image.
+The difference of the images will be highlighted with a red rectangle in a new image stored at the specified path.
+
+== Usage
+
+=== Docker
+
+```
+docker run \
+    --name=kocam \
+    -v "kocam_data:/data" \
+    -e CAMERA_IMAGE_URL="http://<ip>:<port>/path/to/image \
+    jordyv/kocam
+```
+
+== Environment variables
+
+|=====
+| Variable          | Type      | Description
+| INTERVAL          | numeric   | Intervals in ms between refresh, ie 5000 for 5 seconds
+| CAMERA_IMAGE_URL  | string    | URL for camera image
+| THRESHOLD         | numeric   | Threshold before saving difference images, ie 0.8 or 2
+| DATA_DIRECTORY    | string    | Directory to save the images (default /data)
+| LOG_LEVEL         | string    | Log level, INFO, DEBUG, etc.
+|=====
