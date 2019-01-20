@@ -1,7 +1,9 @@
 package nl.jordyversmissen.kocam.imagedifference
 
 import java.awt.Color
+import java.awt.image.BandedSampleModel
 import java.awt.image.BufferedImage
+import java.awt.image.WritableRaster
 import java.io.File
 import javax.imageio.ImageIO
 
@@ -76,15 +78,11 @@ class ImageDifference(
         return (100 * differenceCount) / totalCells
     }
 
-    /**
-     * Save a new image with all differences between the two images highlighted with a red rectangle.
-     * @param outputFile file where to save the image
-     */
-    fun saveDifferenceImage(outputFile: File) {
+    private fun createDifferenceImage(): BufferedImage {
         val newImage = BufferedImage(
-            secondImage.colorModel,
-            secondImage.copyData(null),
-            secondImage.colorModel.isAlphaPremultiplied,
+            firstImage.colorModel,
+            firstImage.copyData(null),
+            firstImage.colorModel.isAlphaPremultiplied,
             null
         )
         val graphics = newImage.createGraphics()
@@ -93,11 +91,43 @@ class ImageDifference(
         for (x in 0..(differenceMatrix.size - 1)) {
             for (y in 0..(differenceMatrix[x].size - 1)) {
                 if (differenceMatrix[x][y] != 0) {
-                    graphics.drawRect(x, y, 5, 5)
+                    graphics.drawRect(x, y, 1, 1)
                 }
             }
         }
+        return newImage
+    }
 
-        ImageIO.write(newImage, "jpeg", outputFile)
+    private fun createComparisonImage(): BufferedImage {
+        val sampleModel = BandedSampleModel(
+            secondImage.sampleModel.dataType,
+            secondImage.sampleModel.width * 3,
+            secondImage.sampleModel.height,
+            secondImage.sampleModel.numBands
+        )
+        val newImage = BufferedImage(
+            secondImage.colorModel,
+            WritableRaster.createWritableRaster(sampleModel, null),
+            secondImage.colorModel.isAlphaPremultiplied,
+            null
+        )
+        val graphics = newImage.createGraphics()
+        graphics.drawImage(firstImage, 0, 0, null)
+        graphics.drawImage(createDifferenceImage(), firstImage.data.width, 0, null)
+        graphics.drawImage(secondImage, firstImage.data.width * 2, 0, null)
+
+        return newImage
+    }
+
+    /**
+     * Save a new image with all differences between the two images highlighted with a red rectangle.
+     * @param outputFile file where to save the image
+     */
+    fun saveDifferenceImage(outputFile: File) {
+        ImageIO.write(createDifferenceImage(), "jpeg", outputFile)
+    }
+
+    fun saveComparisonImage(outputFile: File) {
+        ImageIO.write(createComparisonImage(), "jpeg", outputFile)
     }
 }
