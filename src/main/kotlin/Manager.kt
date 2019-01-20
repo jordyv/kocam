@@ -29,11 +29,8 @@ class Manager(
 
             if (differencePercentage > options.alertThreshold) {
                 thread(true, true, null, "image save") {
-                    val differenceOutputFile = File(options.dataDirectory + "/" + LocalDateTime.now() + "_diff.jpeg")
-                    val comparisonOutputFile = File(options.dataDirectory + "/" + LocalDateTime.now() + "_compare.jpeg")
-                    imageDifference.saveDifferenceImage(differenceOutputFile)
+                    val comparisonOutputFile = File(options.dataDirectory + "/" + LocalDateTime.now() + ".jpeg")
                     imageDifference.saveComparisonImage(comparisonOutputFile)
-                    logger.info("Saved difference image to {}", differenceOutputFile.absolutePath)
                     logger.info("Saved comparison image to {}", comparisonOutputFile.absolutePath)
                 }
             }
