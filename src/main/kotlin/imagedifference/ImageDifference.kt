@@ -1,6 +1,7 @@
 package nl.jordyversmissen.kocam.imagedifference
 
 import java.awt.Color
+import java.awt.Font
 import java.awt.image.BandedSampleModel
 import java.awt.image.BufferedImage
 import java.awt.image.WritableRaster
@@ -95,6 +96,17 @@ class ImageDifference(
                 }
             }
         }
+
+        graphics.apply {
+            this.color = Color.WHITE
+            this.font = Font("Heltevica", Font.BOLD, 16)
+        }
+        graphics.drawString(
+            String.format("%.4f%%", getDifferencePercentage()),
+            firstImage.data.width - 100,
+            firstImage.data.height - 30
+        )
+
         return newImage
     }
 
