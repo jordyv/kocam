@@ -1,14 +1,15 @@
 package nl.jordyversmissen.kocam.imagedifference
 
+import nl.jordyversmissen.kocam.storage.ImageStorageAdapter
 import java.awt.Color
 import java.awt.Font
 import java.awt.image.BandedSampleModel
 import java.awt.image.BufferedImage
 import java.awt.image.WritableRaster
 import java.io.File
-import javax.imageio.ImageIO
 
 class ImageDifference(
+    private val imageStorageAdapter: ImageStorageAdapter,
     private val firstImage: BufferedImage,
     private val secondImage: BufferedImage
 ) {
@@ -136,10 +137,14 @@ class ImageDifference(
      * @param outputFile file where to save the image
      */
     fun saveDifferenceImage(outputFile: File) {
-        ImageIO.write(createDifferenceImage(), "jpeg", outputFile)
+        imageStorageAdapter.store(createDifferenceImage(), outputFile)
     }
 
+    /**
+     * Save a image with the first, difference and second image side by side
+     * @param outputFile file where to save the image
+     */
     fun saveComparisonImage(outputFile: File) {
-        ImageIO.write(createComparisonImage(), "jpeg", outputFile)
+        imageStorageAdapter.store(createComparisonImage(), outputFile)
     }
 }

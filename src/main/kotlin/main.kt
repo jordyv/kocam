@@ -2,6 +2,7 @@ package nl.jordyversmissen.kocam
 
 import nl.jordyversmissen.kocam.imagedifference.ImageDifferenceFactory
 import nl.jordyversmissen.kocam.imagesource.IPCameraImageSource
+import nl.jordyversmissen.kocam.storage.BaseImageStorageAdapter
 import org.slf4j.LoggerFactory
 import java.net.URL
 
@@ -18,10 +19,11 @@ val logLevel: String = env("LOG_LEVEL", "INFO")
 
 fun main() {
     val logger = LoggerFactory.getLogger("kocam")
+    val imageStorageAdapter = BaseImageStorageAdapter()
 
     val manager = Manager(
         IPCameraImageSource(cameraImageUrl),
-        ImageDifferenceFactory(),
+        ImageDifferenceFactory(imageStorageAdapter),
         logger,
         ManagerOptions(dataDirectory = dataDirectory, alertThreshold = threshold, interval = interval)
     )
