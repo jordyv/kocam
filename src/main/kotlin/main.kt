@@ -1,5 +1,6 @@
 package nl.jordyversmissen.kocam
 
+import nl.jordyversmissen.kocam.http.Server
 import nl.jordyversmissen.kocam.imagedifference.ImageDifferenceFactory
 import nl.jordyversmissen.kocam.imagesource.IPCameraImageSource
 import nl.jordyversmissen.kocam.storage.BaseImageStorageAdapter
@@ -29,4 +30,5 @@ fun main() {
     )
 
     manager.start()
+    Server().start()
 }
